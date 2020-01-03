@@ -1,0 +1,23 @@
+#!/bin/bash
+
+# Starts development container using docker-compose run and provides bash shell for running container
+# 
+# Use it like this: ./start
+#
+# SERVICE should be the name of the dev service in docker-compose.yml
+
+SERVICE="node-dev-env"
+
+CONTAINER_ID=$(docker ps -qf "name=$SERVICE")
+if [[ -z "$CONTAINER_ID" ]]; then
+  echo " "
+  echo "Starting service $SERVICE..."
+  echo "docker-compose run --rm --service-ports $SERVICE"
+  echo " "
+  docker-compose run --rm --service-ports $SERVICE
+elif [[ -n "$CONTAINER_ID" ]]; then
+  echo " "
+  echo "Service $SERVICE is already running."
+  echo " "
+  docker ps
+fi

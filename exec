@@ -1,0 +1,36 @@
+#!/bin/bash
+
+# Executes given command on development container by propogating bash args to docker exec
+# 
+# Use it like this:             ./exec <command>
+# 
+# For example, open a shell:    ./exec /bin/bash
+# Start a server:               ./exec yarn start
+# Manage a package:             ./exec yarn add body-parser
+#
+# SERVICE should be the name of the dev service in docker-compose.yml
+
+SERVICE="node-dev-env"
+
+if [[ -z "$1" ]]; then
+  echo " "
+  echo "No arguments supplied. Try passing a command."
+  echo "For example, open a shell with:     ./exec /bin/bash"
+  echo " "
+  exit 1
+fi
+
+CONTAINER_ID=$(docker ps -qf "name=$SERVICE")
+if [[ -z "$CONTAINER_ID" ]]; then
+  echo " "
+  echo "Service $SERVICE is not running."
+  echo "Try running ./start first."
+  echo " "
+  exit 1
+elif [[ -n "$CONTAINER_ID" ]]; then
+  echo " "
+  echo "Executing command..."
+  echo "docker exec -it $CONTAINER_ID $@"
+  echo " "
+  docker exec -it $CONTAINER_ID $@
+fi

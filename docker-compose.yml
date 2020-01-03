@@ -1,0 +1,15 @@
+version: "3"
+services: 
+  # The next line is the name of our service, which is used in our helper bash files
+  node-dev-env:
+    # Build the Dockerfile in the current directory
+    build: .
+    # container_name is optional as Docker will assign one in our absense
+    # container_name: node-docker-example
+    # Map local port 8080 to Node's port 3000
+    ports: 
+      - 8080:3000
+    # Mount the local directory on the host to the working directory on the container
+    # This is SUPER important because it allows our code to auto-reload when we make changes.
+    volumes: 
+      - ./:/home/app
